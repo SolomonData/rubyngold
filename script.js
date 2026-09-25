@@ -51,7 +51,7 @@ const weddingConfig = {
       name: "White Wedding",
       shortName: "White Wedding",
       date: "2026-12-05",
-      startTime: "14:00",
+      startTime: "10:00",
       endTime: "20:00",
 
       // Multi-location events
