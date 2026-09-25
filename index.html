@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trust &amp; Naomi — Save the Date</title>
+<meta name="description" content="Trust &amp; Naomi are getting married. Join us for the Traditional Marriage and White Wedding celebrations.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Trust &amp; Naomi — Save the Date">
+<meta property="og:description" content="Traditional Marriage — 07 November 2026 · White Wedding — 05 December 2026">
+<meta property="og:image" content="assets/save-the-date.webp">
+<meta property="og:image:alt" content="Trust and Naomi wedding save the date artwork">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trust &amp; Naomi — Save the Date">
+<meta name="twitter:description" content="Traditional Marriage — 07 November 2026 · White Wedding — 05 December 2026">
+<meta name="twitter:image" content="assets/save-the-date.webp">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='24'%3E%E2%9D%A4%EF%B8%8F%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Skip link for keyboard/screen-reader users -->
+<a class="skip-link" href="#main">Skip to invitation</a>
+
+<!-- Ambient particles (decorative, aria-hidden, respects reduced motion) -->
+<div class="ambient" aria-hidden="true">
+  <span class="ambient__mote"></span>
+  <span class="ambient__mote"></span>
+  <span class="ambient__mote"></span>
+  <span class="ambient__mote"></span>
+  <span class="ambient__mote"></span>
+</div>
+
+<!-- OPENING REVEAL -->
+<section id="reveal" class="reveal" aria-label="Opening">
+  <div class="reveal__inner">
+    <p class="reveal__eyebrow">Together with joyful hearts</p>
+    <h1 class="reveal__names"><span id="reveal-names">Trust &amp; Naomi</span></h1>
+    <p class="reveal__tag">are getting married</p>
+    <div class="reveal__mark" aria-hidden="true">
+      <svg viewBox="0 0 48 24" width="48" height="24"><path d="M24 22C11 14 2 8 2 1c8-3 14 2 22 9 8-7 14-12 22-9 0 7-9 13-22 21z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+    </div>
+    <button id="reveal-enter" class="btn btn--ghost reveal__enter" type="button">Open the invitation</button>
+  </div>
+</section>
+
+<main id="main" class="app">
+
+  <!-- HERO / COUPLE NAMES -->
+  <header class="hero">
+    <p class="hero__eyebrow">Save the Date</p>
+    <h1 class="hero__names" id="couple-names">RubynGold</h1>
+    <p class="hero__invite" id="invitation-message">We joyfully invite you to celebrate this special chapter with us.</p>
+  </header>
+
+  <!-- SAVE THE DATE DESIGN -->
+  <section class="artwork" aria-label="Save the Date artwork">
+    <button class="artwork__frame" id="artwork-open" type="button" aria-haspopup="dialog" aria-label="View Save the Date artwork full screen">
+      <img id="artwork-img" class="artwork__img" src="assets/save-the-date.webp" alt="Trust and Naomi Save the Date artwork" loading="eager">
+      <!-- <div class="artwork__fallback" id="artwork-fallback" hidden>
+        <span class="artwork__fallback-mono">T &amp; N</span>
+        <span class="artwork__fallback-text">Save the Date artwork goes here</span>
+      </div> -->
+      <span class="artwork__hint">Tap to view</span>
+    </button>
+  </section>
+
+  <!-- EVENT SELECTOR + THEMED EVENT STAGE -->
+  <section class="stage" id="event-stage" aria-label="Wedding events">
+
+    <div class="selector" role="tablist" aria-label="Choose an event" id="event-selector">
+      <!-- buttons injected by JS from config -->
+    </div>
+
+    <div class="event-card" id="event-card">
+      <!-- populated by JS: name, date, venue, countdown, actions -->
+    </div>
+
+    <!-- Add both events to a calendar at once (does not change the selected event) -->
+    <div class="both-events" id="both-events-actions" aria-label="Add both events to your calendar">
+      <!-- populated by JS -->
+    </div>
+
+  </section>
+
+  <!-- SHARE -->
+  <section class="share-block" aria-label="Share this invitation">
+    <h2 class="share-block__title">Spread the joy!!!</h2>
+    <div class="share-block__actions">
+      <button class="btn btn--outline" id="share-invite" type="button">Share invitation</button>
+      <button class="btn btn--outline" id="share-whatsapp" type="button">Share on WhatsApp</button>
+      <button class="btn btn--text" id="copy-link" type="button">Copy link</button>
+    </div>
+    <p class="share-block__status" id="share-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- MUSIC (hidden unless enabled by config) -->
+  <button class="music-toggle" id="music-toggle" type="button" hidden aria-pressed="false">
+    <span class="music-toggle__icon" aria-hidden="true">♪</span>
+    <span class="music-toggle__label">Music</span>
+  </button>
+  <audio id="music-audio" preload="none" loop></audio>
+
+  <footer class="footer">
+    <p>With love, Trust &amp; Naomi</p>
+  </footer>
+</main>
+
+<!-- STICKY MOBILE ACTION BAR -->
+<nav class="action-bar" id="action-bar" aria-label="Quick actions" hidden>
+  <button class="action-bar__btn" id="bar-calendar" type="button">
+    <span aria-hidden="true">📅</span><span>Calendar</span>
+  </button>
+  <button class="action-bar__btn" id="bar-location" type="button">
+    <span aria-hidden="true">📍</span><span>Location</span>
+  </button>
+</nav>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Save the Date artwork, full screen" hidden>
+  <button class="lightbox__close" id="lightbox-close" type="button" aria-label="Close full screen view">&times;</button>
+  <img class="lightbox__img" id="lightbox-img" src="" alt="John and Jane Save the Date artwork, full screen">
+</div>
+
+<!-- OPTIONS SHEET (generic — reused for "add both events" and the mobile action bar) -->
+<div class="sheet" id="calendar-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <div class="sheet__panel">
+    <p class="sheet__title" id="sheet-title">Add to calendar</p>
+    <p class="sheet__note" id="sheet-note" hidden></p>
+    <div id="sheet-options"><!-- option buttons injected by JS --></div>
+    <button class="sheet__cancel" id="cal-cancel" type="button">Cancel</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
