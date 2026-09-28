@@ -19,6 +19,17 @@ const weddingConfig = {
   enableMusic: true,
   musicFile: "rubyngold1.mp3",
 
+
+  gift: {
+    enabled: true,
+    title: "Wedding Gift",
+    message: "Send the Couple💝 a Wedding Gift🎁",
+    accountName: "Trust Moses",
+    bankName: "Globus Bank",
+    accountNumber: "2007089938"
+  },
+
+
   events: {
     traditional: {
       key: "traditional",
@@ -723,6 +734,52 @@ async function copyToClipboard(text) {
 }
 
 /* =========================================================
+   WEDDING GIFT (tap-to-copy account number)
+   ========================================================= */
+let giftStatusTimer = null;
+
+function showGiftStatus(message) {
+  const statusEl = document.getElementById("gift-status");
+  if (!statusEl) return;
+  statusEl.textContent = message;
+  statusEl.classList.add("is-visible");
+  clearTimeout(giftStatusTimer);
+  giftStatusTimer = setTimeout(() => {
+    statusEl.classList.remove("is-visible");
+    statusEl.textContent = "";
+  }, 2500);
+}
+
+async function copyAccountNumber() {
+  const gift = weddingConfig.gift;
+  if (!gift || !gift.accountNumber) return;
+  const ok = await copyToClipboard(String(gift.accountNumber));
+  showGiftStatus(ok ? "Account number copied ❤️" : "Couldn't copy automatically — please copy the number manually.");
+}
+
+function wireGift() {
+  const section = document.getElementById("gift-section");
+  if (!section) return;
+  const gift = weddingConfig.gift;
+
+  if (!gift || !gift.enabled || !gift.accountNumber) {
+    section.hidden = true;
+    return;
+  }
+
+  document.getElementById("gift-title-text").textContent = safeText(gift.title, "Wedding Gift");
+  const msg = document.getElementById("gift-message");
+  msg.textContent = safeText(gift.message);
+  msg.hidden = !gift.message;
+  document.getElementById("gift-account-name").textContent = safeText(gift.accountName);
+  document.getElementById("gift-bank-name").textContent = safeText(gift.bankName);
+  document.getElementById("gift-account-number-text").textContent = String(gift.accountNumber);
+
+  document.getElementById("gift-account-number").addEventListener("click", copyAccountNumber);
+  section.hidden = false;
+}
+
+/* =========================================================
    STICKY ACTION BAR
    ========================================================= */
 function wireActionBar() {
@@ -864,6 +921,7 @@ function init() {
   buildBothEventsActions();
   wireArtwork();
   wireShare();
+  wireGift();
   wireOptionsSheet();
   wireActionBar();
   wireMusic();

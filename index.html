@@ -93,6 +93,33 @@
 
   </section>
 
+    <!-- WEDDING GIFT (hidden if disabled) -->
+  <section class="gift" id="gift-section" aria-labelledby="gift-title" hidden>
+    <h2 class="gift__title" id="gift-title"><span aria-hidden="true">🎁</span> <span id="gift-title-text">Wedding Gift</span></h2>
+    <p class="gift__message" id="gift-message"></p>
+    <dl class="gift__details">
+      <div class="gift__row">
+        <dt>Account Name</dt>
+        <dd id="gift-account-name"></dd>
+      </div>
+      <div class="gift__row">
+        <dt>Bank</dt>
+        <dd id="gift-bank-name"></dd>
+      </div>
+      <div class="gift__row">
+        <dt>Account Number</dt>
+        <dd>
+          <button class="gift__number" id="gift-account-number" type="button" aria-label="Copy account number">
+            <span class="gift__number-text" id="gift-account-number-text"></span>
+            <svg class="gift__copy-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+          </button>
+          <span class="gift__hint">Tap the number to copy</span>
+        </dd>
+      </div>
+    </dl>
+    <p class="gift__status" id="gift-status" role="status" aria-live="polite"></p>
+  </section>
+
   <!-- SHARE -->
   <section class="share-block" aria-label="Share this invitation">
     <h2 class="share-block__title">Spread the joy!!!</h2>

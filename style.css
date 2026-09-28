@@ -436,6 +436,81 @@ button{ font: inherit; }
   color: var(--shell-gold-soft);
 }
 
+
+/* =========================================================
+   WEDDING GIFT
+   ========================================================= */
+.gift{
+  margin: 0 1.25rem 2rem;
+  padding: 1.6rem 1.25rem 1.3rem;
+  text-align: center;
+  background: var(--shell-bg-2);
+  border: 1px solid rgba(201,162,39,.35);
+  border-radius: var(--radius-l);
+}
+.gift[hidden]{ display: none; }
+.gift__title{
+  margin: 0 0 .6rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+.gift__message{
+  margin: 0 auto 1.2rem;
+  max-width: 34ch;
+  font-size: .92rem;
+  color: var(--shell-ink-dim);
+}
+.gift__details{ margin: 0; }
+.gift__row{ margin: 0 0 .9rem; }
+.gift__row dt{
+  font-size: .75rem;
+  color: var(--shell-gold-soft);
+  margin-bottom: .15rem;
+}
+.gift__row dd{
+  margin: 0;
+  font-size: 1rem;
+  color: var(--shell-ink);
+}
+.gift__number{
+  appearance: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+  min-height: var(--tap-min);
+  padding: .55rem 1.1rem;
+  background: rgba(201,162,39,.06);
+  border: 1px dashed var(--shell-gold);
+  border-radius: var(--radius-m);
+  color: var(--shell-ink);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .2s var(--ease), transform .15s var(--ease);
+}
+.gift__number:hover{ background: rgba(201,162,39,.14); }
+.gift__number:active{ background: rgba(201,162,39,.22); transform: scale(.98); }
+.gift__copy-icon{ color: var(--shell-gold-soft); flex: none; }
+.gift__hint{
+  display: block;
+  margin-top: .4rem;
+  font-size: .72rem;
+  color: var(--shell-ink-dim);
+}
+.gift__status{
+  min-height: 1.4em;
+  margin: .3rem 0 0;
+  font-size: .85rem;
+  color: var(--shell-gold-soft);
+  opacity: 0;
+  transition: opacity .25s var(--ease);
+}
+.gift__status.is-visible{ opacity: 1; }
+
+
 .music-toggle{
   display: flex; align-items: center; gap: .4rem;
   margin: 0 auto .5rem;
