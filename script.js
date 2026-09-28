@@ -5,7 +5,7 @@ const weddingConfig = {
   heroTitle: "RubynGold",
   timezone: "Africa/Lagos",
 
-  saveTheDateImage: "img.jpeg",
+  saveTheDateImage: "save_the_date.jpg",
 
   invitationMessage:
     "We joyfully invite you to celebrate this special chapter with us.",
