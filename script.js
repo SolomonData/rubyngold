@@ -29,6 +29,24 @@ const weddingConfig = {
     accountNumber: "2007089938"
   },
 
+  gallery: {
+    enabled: true,
+    title: "A Glimps of Forever",
+    images: [
+      { src: "1_result.webp", alt: "A special moment together" },
+      { src: "2_result.webp", alt: "A beautiful memory" },
+      { src: "3_result.webp", alt: "A beautiful memory" },
+      { src: "4_result.webp", alt: "A beautiful memory" },
+      { src: "5_result.webp", alt: "A beautiful memory" },
+      { src: "6_result.webp", alt: "A beautiful memory" },
+      { src: "7_result.webp", alt: "A beautiful memory" },
+      { src: "8_result.webp", alt: "A beautiful memory" },
+      { src: "9_result.webp", alt: "A beautiful memory" },
+      { src: "10_result.webp", alt: "A beautiful memory" },
+      { src: "11_result.webp", alt: "A beautiful memory" },
+      { src: "12_result.webp", alt: "A beautiful memory" }
+    ]
+  },
 
   events: {
     traditional: {
@@ -780,6 +798,152 @@ function wireGift() {
 }
 
 /* =========================================================
+   PHOTO GALLERY
+   Grid + lightbox with prev/next/close, keyboard arrows, and swipe.
+   Photos that fail to load are quietly skipped.
+   ========================================================= */
+const galleryState = { items: [], buttons: [], failed: new Set(), index: 0, opener: null };
+
+function getVisibleGalleryIndices() {
+  return galleryState.items.map((_, i) => i).filter(i => !galleryState.failed.has(i));
+}
+
+function markGalleryImageFailed(i) {
+  galleryState.failed.add(i);
+  if (galleryState.buttons[i]) galleryState.buttons[i].hidden = true;
+  if (getVisibleGalleryIndices().length === 0) {
+    const section = document.getElementById("gallery-section");
+    if (section) section.hidden = true;
+    closeGalleryLightbox();
+  }
+}
+
+function showGalleryPhoto() {
+  const visible = getVisibleGalleryIndices();
+  const item = galleryState.items[galleryState.index];
+  if (!item || visible.length === 0) return;
+
+  const img = document.getElementById("gallery-lightbox-img");
+  img.alt = safeText(item.alt, "Photo");
+  img.src = item.src;
+
+  const pos = visible.indexOf(galleryState.index);
+  document.getElementById("gallery-count").textContent = `${pos + 1} / ${visible.length}`;
+
+  const multiple = visible.length > 1;
+  document.getElementById("gallery-prev").hidden = !multiple;
+  document.getElementById("gallery-next").hidden = !multiple;
+
+  // Warm the cache for the neighbours so swiping feels instant
+  if (multiple) {
+    [1, -1].forEach(d => {
+      const n = galleryState.items[visible[(pos + d + visible.length) % visible.length]];
+      if (n) new Image().src = n.src;
+    });
+  }
+}
+
+function stepGallery(direction) {
+  const visible = getVisibleGalleryIndices();
+  if (visible.length < 2) return;
+  const pos = visible.indexOf(galleryState.index);
+  galleryState.index = visible[(pos + direction + visible.length) % visible.length];
+  showGalleryPhoto();
+}
+
+function openGalleryLightbox(index, opener) {
+  galleryState.index = index;
+  galleryState.opener = opener || null;
+  showGalleryPhoto();
+  document.getElementById("gallery-lightbox").hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("gallery-close").focus();
+}
+
+function closeGalleryLightbox() {
+  const lb = document.getElementById("gallery-lightbox");
+  if (!lb || lb.hidden) return;
+  lb.hidden = true;
+  document.body.style.overflow = "";
+  if (galleryState.opener && !galleryState.opener.hidden) galleryState.opener.focus();
+}
+
+function wireGallery() {
+  const section = document.getElementById("gallery-section");
+  if (!section) return;
+  const gallery = weddingConfig.gallery;
+  const images = gallery && Array.isArray(gallery.images) ? gallery.images.filter(im => im && im.src) : [];
+
+  if (!gallery || !gallery.enabled || images.length === 0) {
+    section.hidden = true;
+    return;
+  }
+
+  document.getElementById("gallery-title").textContent = safeText(gallery.title, "Our Moments");
+  const grid = document.getElementById("gallery-grid");
+  grid.innerHTML = "";
+  galleryState.items = images;
+  galleryState.buttons = [];
+  galleryState.failed = new Set();
+
+  images.forEach((image, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "gallery__item";
+    btn.setAttribute("aria-label", `Open photo ${i + 1} of ${images.length}` + (image.alt ? `: ${image.alt}` : ""));
+
+    const img = document.createElement("img");
+    img.className = "gallery__img";
+    img.alt = safeText(image.alt, "Photo");
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.addEventListener("load", () => btn.classList.add("is-loaded"));
+    img.addEventListener("error", () => markGalleryImageFailed(i));
+    img.src = image.src;
+
+    btn.appendChild(img);
+    btn.addEventListener("click", () => openGalleryLightbox(i, btn));
+    grid.appendChild(btn);
+    galleryState.buttons.push(btn);
+  });
+
+  const lb = document.getElementById("gallery-lightbox");
+  document.getElementById("gallery-close").addEventListener("click", closeGalleryLightbox);
+  document.getElementById("gallery-prev").addEventListener("click", () => stepGallery(-1));
+  document.getElementById("gallery-next").addEventListener("click", () => stepGallery(1));
+  lb.addEventListener("click", e => { if (e.target === lb) closeGalleryLightbox(); });
+
+  // If the photo shown in the lightbox fails, drop it and move on
+  document.getElementById("gallery-lightbox-img").addEventListener("error", () => {
+    if (lb.hidden) return;
+    const failedIndex = galleryState.index;
+    markGalleryImageFailed(failedIndex);
+    if (getVisibleGalleryIndices().length) stepGallery(1);
+  });
+
+  document.addEventListener("keydown", e => {
+    if (lb.hidden) return;
+    if (e.key === "Escape") closeGalleryLightbox();
+    else if (e.key === "ArrowLeft") stepGallery(-1);
+    else if (e.key === "ArrowRight") stepGallery(1);
+  });
+
+  // Swipe: mostly-horizontal drag of 50px+ changes photo
+  let startX = 0, startY = 0;
+  lb.addEventListener("touchstart", e => {
+    const t = e.changedTouches[0];
+    startX = t.clientX; startY = t.clientY;
+  }, { passive: true });
+  lb.addEventListener("touchend", e => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX, dy = t.clientY - startY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) stepGallery(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  section.hidden = false;
+}
+
+/* =========================================================
    STICKY ACTION BAR
    ========================================================= */
 function wireActionBar() {
@@ -922,6 +1086,7 @@ function init() {
   wireArtwork();
   wireShare();
   wireGift();
+  wireGallery(); 
   wireOptionsSheet();
   wireActionBar();
   wireMusic();

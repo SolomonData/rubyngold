@@ -120,6 +120,12 @@
     <p class="gift__status" id="gift-status" role="status" aria-live="polite"></p>
   </section>
 
+  <!-- GALLERY (filled from weddingConfig.gallery; hidden if disabled) -->
+  <section class="gallery" id="gallery-section" aria-labelledby="gallery-title" hidden>
+    <h2 class="gallery__title" id="gallery-title">A Glimps of Forever</h2>
+    <div class="gallery__grid" id="gallery-grid"><!-- photos injected by JS --></div>
+  </section>
+
   <!-- SHARE -->
   <section class="share-block" aria-label="Share this invitation">
     <h2 class="share-block__title">Spread the joy!!!</h2>
@@ -157,6 +163,17 @@
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Save the Date artwork, full screen" hidden>
   <button class="lightbox__close" id="lightbox-close" type="button" aria-label="Close full screen view">&times;</button>
   <img class="lightbox__img" id="lightbox-img" src="" alt="John and Jane Save the Date artwork, full screen">
+</div>
+
+<!-- GALLERY LIGHTBOX -->
+<div class="gallery-lb" id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery" hidden>
+  <button class="gallery-lb__close" id="gallery-close" type="button" aria-label="Close photo">&times;</button>
+  <button class="gallery-lb__nav gallery-lb__nav--prev" id="gallery-prev" type="button" aria-label="Previous photo">&#8249;</button>
+  <figure class="gallery-lb__figure">
+    <img class="gallery-lb__img" id="gallery-lightbox-img" src="" alt="">
+    <figcaption class="gallery-lb__count" id="gallery-count" aria-live="polite"></figcaption>
+  </figure>
+  <button class="gallery-lb__nav gallery-lb__nav--next" id="gallery-next" type="button" aria-label="Next photo">&#8250;</button>
 </div>
 
 <!-- OPTIONS SHEET (generic — reused for "add both events" and the mobile action bar) -->
