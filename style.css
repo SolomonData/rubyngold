@@ -692,7 +692,7 @@ button{ font: inherit; }
   margin: 0 0 1rem;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 .gallery__grid{
   column-count: 2;
