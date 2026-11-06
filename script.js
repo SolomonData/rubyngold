@@ -31,7 +31,7 @@ const weddingConfig = {
 
   gallery: {
     enabled: true,
-    title: "A Glimps of Forever",
+    title: "A GLIMPSE OF OUR FOREVER",
     images: [
       { src: "1_result.webp", alt: "A special moment together" },
       { src: "2_result.webp", alt: "A beautiful memory" },
